@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @CrossOrigin
-    @PostMapping("/create/{user}")
+    @PostMapping("/create")
     public User createUser(@RequestBody User user){
         try {
             userService.createUser(user);

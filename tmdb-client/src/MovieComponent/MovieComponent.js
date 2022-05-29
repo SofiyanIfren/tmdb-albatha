@@ -64,10 +64,10 @@ export default function MovieComponent(props) {
                                 aria-describedby="modal-modal-description">
                                 <Box sx={modalStyle}>
                                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                                        {details.original_title}
+                                        {details.original_title ? details.original_title : "Sorry, no title available for this movie"}
                                     </Typography>
                                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                                        {details.tagline}
+                                        {details.tagline ? details.tagline : "Sorry, no tagline available for this movie..."}
                                     </Typography>
                                     
                                 </Box>
