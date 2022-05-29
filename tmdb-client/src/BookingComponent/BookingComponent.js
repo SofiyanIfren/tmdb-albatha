@@ -2,11 +2,11 @@ import * as React from 'react';
 import convertToReadableDate from '../Utils/Functions';
 
 import { List, Card, CardHeader, Typography, CardContent,
-    ButtonGroup, Button } from '@mui/material';
-import { MOVIE_SERVER_URL } from "../Utils/Constants";
+    ButtonGroup, Button, IconButton, Snackbar } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import { BOOKING_SERVER_URL, MOVIE_SERVER_URL } from "../Utils/Constants";
 
 export default function BookingComponent(props) {
-    
     
     const BookingMovie = ({movieId}) => {
         const [details, setDetails] = React.useState(false);
@@ -14,14 +14,40 @@ export default function BookingComponent(props) {
             fetch(MOVIE_SERVER_URL+"/details/"+movieId)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data.title);
-                    setDetails(data)
+                    setDetails(data);
                     return (data.title);
                 })
             }, [])
         return (
             <CardHeader title={details.title} subheader={details.tagline}/>
         )
+    }
+
+    const [open, setOpen] = React.useState(false);
+    const [message, setMessage] = React.useState('');
+    const handleClick = () => { setOpen(true); }
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') { return; }
+        setOpen(false);
+    }
+    const action = (
+        <React.Fragment>
+          <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </React.Fragment>
+    )
+    async function cancelBooking(bookingId){
+        fetch(BOOKING_SERVER_URL+"/cancel/"+bookingId, {method: 'PUT'}).then(response => {
+            if (response.status === 200){
+                setMessage('Booking canceled with success !');
+                handleClick();
+                setTimeout(() => window.location.reload(false), 1000);
+            } else {
+                setMessage('Ooops ! Something went wrong...');
+                handleClick();
+            }
+        })
     }
 
     return (
@@ -37,8 +63,17 @@ export default function BookingComponent(props) {
                                 <strong>Email : </strong>{book.user.email}
                             </Typography>
                             <ButtonGroup variant="text" sx={{ mt: 2 }}>
-                                <Button onClick={()=>(console.log('cancel'))}>Delete Booking</Button>
+                                {book.active
+                                ? <Button onClick={()=>(cancelBooking(book.id))}>Cancel Booking</Button>
+                                : '' } {/* Booking is not active : only update allowed */}
                                 <Button onClick={()=>(console.log('update'))}>Update Booking</Button>
+                                <Snackbar
+                                    open={open}
+                                    autoHideDuration={6000}
+                                    onClose={handleClose}
+                                    message={message}
+                                    action={action}
+                                />
                             </ButtonGroup>
                         </CardContent>
                     </Card>
