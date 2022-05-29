@@ -36,7 +36,7 @@
 
 * Administration page : View all booking and details
 * Administration page : Search for a specific booking
-* Administration page : Cancel and update bookings (In Progress)
+* Administration page : Cancel and update bookings (For admins only)
 
 ## How To Use
 
@@ -91,12 +91,12 @@ The webservices consumed by the back-end are (no Swagger API integration for the
 ### User Webservices : Managing Users
 
 * GET /user/all - List all the users
-* GET /user/create/{user} - Create a new user
+* POST /user/create - Create a new user
 * GET /user/search/email/{email} - Search a user by email
  
 ### Booking Webservices : Managing Bookings
 
-* GET /booking/create/{userEmail}/{movieId}/{numberOfSeats}/{date}/{isActive} - Create a booking for a user related to a specific movie
+* GET /booking/create/{userEmail}/{movieId}/{numberOfSeats}/{date}/{isActive} - Create a booking for a user related to a specific movie, needs the User to be registered
 * GET /booking/all - List all bookings
 * GET /booking/all/email/{email} - List all bookings related to a user email
 * GET /booking/all/email/id/{email}/{movieId} - List all bookings related to a user email and a specific movie
@@ -180,7 +180,7 @@ The frontend app is available on the default port 3000. Enjoy !
 
 - Build Docker Image for deployment
 
-- BACK-END : Documentation automatisation tools : Swagger, Tattletale 
+- BACK-END : Documentation tools (automated documentation generation) : Swagger, Tattletale 
 - BACK-END : Add a custom ResponseEntity to wrap webservices responses
 - BACK-END : Implement tests
 
