@@ -57,7 +57,7 @@ Then, from your command line:
 
 ```bash
 # Clone this repository
-$ git clone https://github.com/amitmerchant1990/electron-markdownify
+$ git clone https://github.com/SofiyanIfren/tmdb-albatha.git
 
 # Go into the server repository
 $ cd tmdb-server
